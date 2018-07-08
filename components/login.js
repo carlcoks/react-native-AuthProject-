@@ -190,10 +190,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff3c3c',
     paddingTop: 5,
     paddingBottom: 5,
-    justifyContent: 'center'
+    paddingLeft: 5,
   },
   errorText: {
-    textAlign: 'center',
     color: '#fff',
     fontSize: 12,
     fontFamily: 'Lato'
