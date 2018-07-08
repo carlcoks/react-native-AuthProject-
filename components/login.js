@@ -1,22 +1,42 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, Text, View, TextInput } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
 
 export default class LoginScreen extends React.Component {
   state = {
     telefon: '',
-    password: ''
+    password: '',
+    error: {
+      telefon: false,
+      password: false
+    }
   }
+
   handleTelefon = (text) => {
-    this.setState({ telefon: text })
+    this.setState({
+      telefon: text,
+      error: {
+        telefon: false
+      }
+    })
   }
   handlePassword = (text) => {
-    this.setState({ password: text })
+    this.setState({
+      password: text,
+      error: {
+        password: false
+      }
+    })
   }
 
   login = (email, pass) => {
-
+    this.setState({
+      error: {
+        telefon: true,
+        password: true
+      }
+    })
   }
 
   render() {
@@ -35,24 +55,42 @@ export default class LoginScreen extends React.Component {
           <Text style={styles.between}>или</Text>
 
           <View>
-            <TextInput style = {styles.input}
-              underlineColorAndroid = "transparent"
-              placeholder = "+7"
-              placeholderTextColor = "#616161"
-              autoCapitalize = "none"
-              onChangeText = {this.handleTelefon}/>
+            <View style={styles.inputBlock}>
+              <Image style={styles.inputImg} source = {require('../src/img/telefon.png')} />
+              <TextInput style = {styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "+7"
+                placeholderTextColor = "#616161"
+                autoCapitalize = "none"
+                value={this.state.telefon}
+                onChangeText = {(text)=> this.handleTelefon(text)}/>
+              { this.state.error.telefon ?
+                (<View style={styles.error}>
+                  <Text style={styles.errorText}>Такой номер телефона не зарегистрирован в ODDS</Text>
+                </View>) : ''
+              }
+            </View>
 
-            <TextInput style = {styles.input}
-              underlineColorAndroid = "transparent"
-              placeholder = "Пароль"
-              placeholderTextColor = "#616161"
-              autoCapitalize = "none"
-              onChangeText = {this.handlePassword}/>
+            <View style={styles.inputBlock}>
+              <Image style={styles.inputImg} source = {require('../src/img/password.png')} />
+              <TextInput style = {styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "Пароль"
+                placeholderTextColor = "#616161"
+                autoCapitalize = "none"
+                value={this.state.password}
+                onChangeText = {(text)=> this.handlePassword(text)}/>
+              { this.state.error.password ?
+                (<View style={styles.error}>
+                  <Text style={styles.errorText}>Ошибочка... Пароль или телефон введены неверно. :(</Text>
+                </View>) : ''
+              }
+            </View>
 
             <TouchableOpacity
                style = {styles.submitButton}
                onPress = { () => this.login(this.state.email, this.state.password) }>
-               <Text style = {styles.submitButtonText}>Войти</Text>
+               <Text style = {styles.submitButtonText}>ВОЙТИ</Text>
             </TouchableOpacity>
 
             <Text style={styles.recovery}>Забыли пароль?</Text>
@@ -85,28 +123,42 @@ const styles = StyleSheet.create({
   },
   createAcc: {
     width: '100%',
-    borderRadius: 30,
+    borderRadius: 33,
     backgroundColor: '#ffb047',
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingTop: 15,
+    paddingBottom: 15,
     justifyContent: 'center'
   },
   createAccText: {
     fontSize: 16,
     color: '#fff',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'LatoBold'
   },
   between: {
     marginTop: 30,
     marginBottom: 30,
     color: '#5e5e5c',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 23,
+    fontFamily: 'Lato'
+  },
+  inputBlock: {
+    position: 'relative',
+    width: '100%',
+    marginBottom: 25,
+    alignItems: 'center'
+  },
+  inputImg: {
+    position: 'absolute',
+    left: 0,
   },
   input: {
-    marginBottom: 25,
     width: '100%',
     paddingBottom: 10,
-    fontSize: 16,
+    paddingLeft: 35,
+    fontSize: 20,
+    fontFamily: 'Lato',
     borderBottomWidth: 1,
     borderColor: '#dfdfdf'
   },
@@ -122,11 +174,28 @@ const styles = StyleSheet.create({
   submitButtonText: {
     textAlign: 'center',
     color: '#000',
-    fontSize: 20,
+    fontSize: 22,
+    fontFamily: 'Lato',
   },
   recovery: {
     textAlign: 'center',
     fontSize: 16,
-    marginTop: 20
+    marginTop: 20,
+    fontFamily: 'Lato'
+  },
+  error: {
+    position: 'absolute',
+    top: '100%',
+    width: '100%',
+    backgroundColor: '#ff3c3c',
+    paddingTop: 5,
+    paddingBottom: 5,
+    justifyContent: 'center'
+  },
+  errorText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 12,
+    fontFamily: 'Lato'
   }
 });
